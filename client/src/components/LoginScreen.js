@@ -1,7 +1,8 @@
 import { useContext } from 'react';
-import AuthContext from '../auth'
-
+import AuthContext from '../auth';
+import GlobalStoreContext from '../store';
 import Copyright from './Copyright'
+import api from '../auth/auth-request-api';
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -15,18 +16,56 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import MUILoginErrorModal from './MUILoginErrorModal'
 
 export default function LoginScreen() {
     const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        auth.loginUser(
-            formData.get('email'),
-            formData.get('password')
-        );
+        if (formData.get('email') == '' || formData.get('password') == ''){
+            let errMsg = "Please fill in all required fields.";
+            store.showLoginErrorModal(errMsg);
+        }
 
+        else {
+            // auth.loginUser(
+            //     formData.get('email'),
+            //     formData.get('password')
+            // );
+            // async function asyncLoginUser() {
+            //     const response = await auth.loginUser(formData.get('email'),formData.get('password'));
+            //     if (!response.data.success) {
+            //         store.showLoginErrorModal();
+            //     }
+
+            //     else {
+            //         auth.loginUser(
+            //             formData.get('email'),
+            //             formData.get('password')
+            //         );
+            //     }
+            // }
+
+            async function asyncLoginUser() {
+                const response = await api.getLoggedIn();
+
+                if (response.status === 401) {
+                    let errMsg = "Incorrect email or password.";
+                    store.showLoginErrorModal(errMsg);
+                }
+
+                else {
+                    auth.loginUser(
+                        formData.get('email'),
+                        formData.get('password')
+                    );
+                }
+            }
+            asyncLoginUser();
+        }
     };
 
     return (
@@ -111,6 +150,7 @@ export default function LoginScreen() {
                     </Box>
                 </Box>
             </Grid>
+            <MUILoginErrorModal />
         </Grid>
     );
 }

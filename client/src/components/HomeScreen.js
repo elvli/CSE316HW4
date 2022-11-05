@@ -2,6 +2,9 @@ import React, { useContext, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
 import ListCard from './ListCard.js'
 import MUIDeleteModal from './MUIDeleteModal'
+import MUIEditSongModal from './MUIEditSongModal'
+import MUIRemoveSongModal from './MUIRemoveSongModal'
+import MUIRegisterErrorModal from './MUIRegisterErrorModal'
 
 import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab'
@@ -55,6 +58,9 @@ const HomeScreen = () => {
                     listCard
                 }
                 <MUIDeleteModal />
+                {/* <MUIEditSongModal /> */}
+                <MUIRegisterErrorModal />
+                {/* <MUIRemoveSongModal /> */}
             </div>
         </div>)
 }

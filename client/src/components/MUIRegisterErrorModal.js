@@ -13,44 +13,32 @@ const style = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
+    p: 2,
 };
 
-export default function MUIDeleteModal() {
+export default function MUIRegisterErrorModal() {
     const { store } = useContext(GlobalStoreContext);
-    let name = "";
-    if (store.listMarkedForDeletion) {
-        name = store.listMarkedForDeletion.name;
-    }
-    function handleDeleteList(event) {
-        event.stopPropagation();
-        store.deleteMarkedList();
-    }
+
     function handleCloseModal(event) {
         event.stopPropagation();
-        store.unmarkListForDeletion();
+        store.hideModals();
     }
 
     return (
         <Modal
-            open={store.listMarkedForDeletion !== null}
+            open={store.registerError == true}
         >
             <Box sx={style}>
                 <div className="modal-dialog">
                 <header className="dialog-header">
-                    Delete the {name} Top 5 List?
+                    {store.errorMessage}
                 </header>
                 <div id="confirm-cancel-container">
-                    <button
-                        id="dialog-yes-button"
-                        className="modal-button"
-                        onClick={handleDeleteList}
-                    >Confirm</button>
                     <button
                         id="dialog-no-button"
                         className="modal-button"
                         onClick={handleCloseModal}
-                    >Cancel</button>
+                    >Close</button>
                 </div>
             </div>
             </Box>

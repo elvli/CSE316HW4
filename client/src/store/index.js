@@ -16,7 +16,6 @@ import AuthContext from '../auth'
 
 // THIS IS THE CONTEXT WE'LL USE TO SHARE OUR STORE
 export const GlobalStoreContext = createContext({});
-console.log("create GlobalStoreContext");
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
 // DATA STORE STATE THAT CAN BE PROCESSED
@@ -26,10 +25,13 @@ export const GlobalStoreActionType = {
     CREATE_NEW_LIST: "CREATE_NEW_LIST",
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
     MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
+    UNMARK_LIST_FOR_DELETION: "UNMARK_LIST_FOR_DELETION",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     EDIT_SONG: "EDIT_SONG",
     REMOVE_SONG: "REMOVE_SONG",
+    LOGIN_ERROR: "LOGIN_ERROR",
+    REGISTER_ERROR: "REGISTER_ERROR",
     HIDE_MODALS: "HIDE_MODALS"
 }
 
@@ -40,7 +42,9 @@ const CurrentModal = {
     NONE : "NONE",
     DELETE_LIST : "DELETE_LIST",
     EDIT_SONG : "EDIT_SONG",
-    REMOVE_SONG : "REMOVE_SONG"
+    REMOVE_SONG : "REMOVE_SONG",
+    LOGIN_ERROR : "LOGIN_ERROR",
+    REGISTER_ERROR : "REGISTER_ERROR",
 }
 
 // WITH THIS WE'RE MAKING OUR GLOBAL DATA STORE
@@ -56,11 +60,12 @@ function GlobalStoreContextProvider(props) {
         newListCounter: 0,
         listNameActive: false,
         listIdMarkedForDeletion: null,
-        listMarkedForDeletion: null
+        listMarkedForDeletion: null,
+        loginError: false,
+        registerError: false,
+        errorMessage: "",
     });
     const history = useHistory();
-
-    console.log("inside useGlobalStore");
 
     // SINCE WE'VE WRAPPED THE STORE IN THE AUTH CONTEXT WE CAN ACCESS THE USER HERE
     const { auth } = useContext(AuthContext);
@@ -82,7 +87,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -96,7 +104,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 })
             }
             // CREATE A NEW LIST
@@ -110,7 +121,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter + 1,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -124,7 +138,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -138,7 +155,27 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: payload.id,
-                    listMarkedForDeletion: payload.playlist
+                    listMarkedForDeletion: payload.playlist,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
+                });
+            }
+
+            case GlobalStoreActionType.UNMARK_LIST_FOR_DELETION: {
+                return setStore({
+                    currentModal : CurrentModal.NONE,
+                    idNamePairs: store.idNamePairs,
+                    currentList: null,
+                    currentSongIndex: -1,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             // UPDATE A LIST
@@ -152,7 +189,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             // START EDITING A LIST NAME
@@ -166,7 +206,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: true,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             // 
@@ -180,7 +223,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             case GlobalStoreActionType.REMOVE_SONG: {
@@ -193,7 +239,42 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
+                });
+            }
+            case GlobalStoreActionType.LOGIN_ERROR: {
+                return setStore({
+                    currentModal : CurrentModal.LOGIN_ERROR,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: store.currentSongIndex,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    loginError: true,
+                    registerError: false,
+                    errorMessage: payload,
+                });
+            }
+            case GlobalStoreActionType.REGISTER_ERROR: {
+                return setStore({
+                    currentModal : CurrentModal.REGISTER_ERROR,
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    currentSongIndex: store.currentSongIndex,
+                    currentSong: null,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    listIdMarkedForDeletion: null,
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: true,
+                    errorMessage: payload,
                 });
             }
             case GlobalStoreActionType.HIDE_MODALS: {
@@ -206,7 +287,10 @@ function GlobalStoreContextProvider(props) {
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
-                    listMarkedForDeletion: null
+                    listMarkedForDeletion: null,
+                    loginError: false,
+                    registerError: false,
+                    errorMessage: "",
                 });
             }
             default:
@@ -318,6 +402,12 @@ function GlobalStoreContextProvider(props) {
         }
         getListToDelete(id);
     }
+    store.unmarkListForDeletion = function () {
+        storeReducer({
+            type: GlobalStoreActionType.UNMARK_LIST_FOR_DELETION,
+            payload: null
+        });
+    } 
     store.deleteList = function (id) {
         async function processDelete(id) {
             let response = await api.deletePlaylistById(id);
@@ -331,10 +421,10 @@ function GlobalStoreContextProvider(props) {
     store.deleteMarkedList = function() {
         store.deleteList(store.listIdMarkedForDeletion);
         store.hideModals();
+        store.loadIdNamePairs();
     }
     // THIS FUNCTION SHOWS THE MODAL FOR PROMPTING THE USER
     // TO SEE IF THEY REALLY WANT TO DELETE THE LIST
-
     store.showEditSongModal = (songIndex, songToEdit) => {
         storeReducer({
             type: GlobalStoreActionType.EDIT_SONG,
@@ -342,11 +432,25 @@ function GlobalStoreContextProvider(props) {
         });        
     }
     store.showRemoveSongModal = (songIndex, songToRemove) => {
+        console.log("showRemoveSongModal")
         storeReducer({
             type: GlobalStoreActionType.REMOVE_SONG,
             payload: {currentSongIndex: songIndex, currentSong: songToRemove}
         });        
     }
+    store.showLoginErrorModal = (errMsg) => {
+        storeReducer({
+            type: GlobalStoreActionType.LOGIN_ERROR,
+            payload: errMsg
+        });  
+    }
+    store.showRegisterErrorModal = (errMsg) => {
+        storeReducer({
+            type: GlobalStoreActionType.REGISTER_ERROR,
+            payload: errMsg
+        });  
+    }
+
     store.hideModals = () => {
         storeReducer({
             type: GlobalStoreActionType.HIDE_MODALS,

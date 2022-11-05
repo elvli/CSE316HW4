@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 import AuthContext from '../auth'
+import GlobalStoreContext from '../store';
 import Copyright from './Copyright'
 
 import Avatar from '@mui/material/Avatar';
@@ -12,20 +13,54 @@ import Link from '@mui/material/Link';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import MUIRegisterErrorModal from './MUIRegisterErrorModal';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
+    const { store } = useContext(GlobalStoreContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
-        auth.registerUser(
-            formData.get('firstName'),
-            formData.get('lastName'),
-            formData.get('email'),
-            formData.get('password'),
-            formData.get('passwordVerify')
-        );
+
+        console.log(formData.get('firstName'));
+        console.log(formData.get('lastName'));
+        console.log(formData.get('email'));
+        console.log(formData.get('password'));
+        console.log(formData.get('passwordVerify'));
+
+        if (formData.get('firstName') == '' || formData.get('lastName') == '' || formData.get('email') == ''
+            || formData.get('password') == '' || formData.get('passwordVerify') == '') {
+            
+            let errMsg = "Please fill in all required fields.";
+            store.showRegisterErrorModal(errMsg);
+        }
+
+        else if (!formData.get('email').includes('@') || !formData.get('email').includes('.com')) {
+            let errMsg = "Please enter a valid email."
+            store.showRegisterErrorModal(errMsg);
+        }
+
+        else if (formData.get('password').length < 8) {
+            let errMsg = "Password must be at least 8 characters long.";
+            store.showRegisterErrorModal(errMsg);
+        }
+
+        else if (formData.get('password') !== formData.get('passwordVerify')) {
+            let errMsg = "Passwords do not match.";
+            store.showRegisterErrorModal(errMsg);
+        }
+
+        else {
+            auth.registerUser(
+                formData.get('firstName'),
+                formData.get('lastName'),
+                formData.get('email'),
+                formData.get('password'),
+                formData.get('passwordVerify')
+            );
+            console.log("account created");
+        }
     };
 
     return (
@@ -119,6 +154,7 @@ export default function RegisterScreen() {
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
+                <MUIRegisterErrorModal />
             </Container>
     );
 }

@@ -9,7 +9,12 @@ import {
     LoginScreen,
     RegisterScreen,
     Statusbar,
-    WorkspaceScreen
+    WorkspaceScreen,
+    MUIDeleteModal,
+    MUIEditSongModal,
+    MUIRemoveSongModal,
+    MUILoginErrorModal,
+    MUIRegisterErrorModal,
 } from './components'
 /*
     This is our application's top-level component.
@@ -34,6 +39,10 @@ const App = () => {
                         <Route path="/register/" exact component={RegisterScreen} />
                         <Route path="/playlist/:id" exact component={WorkspaceScreen} />
                     </Switch>
+                    {/* <Route exact component={MUIDeleteModal} />
+                    <Route exact component={MUIEditSongModal} />
+                    <Route exact component={MUIRemoveSongModal} />
+                    <Route exact component={MUILoginErrorModal} /> */}
                     <Statusbar />
                 </GlobalStoreContextProvider>
             </AuthContextProvider>
