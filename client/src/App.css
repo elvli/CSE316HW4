@@ -131,6 +131,15 @@ body {
   font-size: 36pt;
 }
 
+#playlister-statusbar {
+  position: absolute;
+  text-align: center;
+  display: flex;
+  width: 100%;
+  margin: 20px;
+  justify-content: center;
+}
+
 #list-selector-heading {
   position: absolute;
   left: 0%;

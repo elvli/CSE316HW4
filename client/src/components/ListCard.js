@@ -101,6 +101,12 @@ function ListCard(props) {
 
     if (editActive) {
         cardElement =
+        <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            sx={{ margin: 0, p: 4 }}
+            style={{ width: '100%', fontSize: '48pt' }}
+        >
             <TextField
                 margin="normal"
                 required
@@ -117,6 +123,7 @@ function ListCard(props) {
                 InputLabelProps={{style: {fontSize: 24}}}
                 autoFocus
             />
+        </ListItem>
     }
     return (
         cardElement

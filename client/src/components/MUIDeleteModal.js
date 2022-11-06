@@ -42,6 +42,6 @@ export default function MUIDeleteModal() {
                     Cancel
                 </Button>
             </DialogActions>
-      </Dialog>
+        </Dialog>
     );
 }

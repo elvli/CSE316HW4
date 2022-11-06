@@ -23,12 +23,6 @@ export default function RegisterScreen() {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
 
-        console.log(formData.get('firstName'));
-        console.log(formData.get('lastName'));
-        console.log(formData.get('email'));
-        console.log(formData.get('password'));
-        console.log(formData.get('passwordVerify'));
-
         if (formData.get('firstName') == '' || formData.get('lastName') == '' || formData.get('email') == ''
             || formData.get('password') == '' || formData.get('passwordVerify') == '') {
             
