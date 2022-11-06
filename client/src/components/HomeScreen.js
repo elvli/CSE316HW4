@@ -58,9 +58,6 @@ const HomeScreen = () => {
                     listCard
                 }
                 <MUIDeleteModal />
-                {/* <MUIEditSongModal /> */}
-                <MUIRegisterErrorModal />
-                {/* <MUIRemoveSongModal /> */}
             </div>
         </div>)
 }

@@ -62,7 +62,6 @@ function GlobalStoreContextProvider(props) {
         listIdMarkedForDeletion: null,
         listMarkedForDeletion: null,
         loginError: false,
-        registerError: false,
         errorMessage: "",
     });
     const history = useHistory();
@@ -89,7 +88,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -106,7 +104,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 })
             }
@@ -123,7 +120,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 })
             }
@@ -140,7 +136,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -157,7 +152,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: payload.id,
                     listMarkedForDeletion: payload.playlist,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -174,7 +168,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -191,7 +184,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -208,7 +200,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -225,7 +216,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -238,10 +228,9 @@ function GlobalStoreContextProvider(props) {
                     currentSong: payload.currentSong,
                     newListCounter: store.newListCounter,
                     listNameActive: false,
-                    listIdMarkedForDeletion: null,
+                    listIdMarkedForDeletion: true,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -257,7 +246,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: true,
-                    registerError: false,
                     errorMessage: payload,
                 });
             }
@@ -272,8 +260,7 @@ function GlobalStoreContextProvider(props) {
                     listNameActive: false,
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
-                    loginError: false,
-                    registerError: true,
+                    loginError: true,
                     errorMessage: payload,
                 });
             }
@@ -289,7 +276,6 @@ function GlobalStoreContextProvider(props) {
                     listIdMarkedForDeletion: null,
                     listMarkedForDeletion: null,
                     loginError: false,
-                    registerError: false,
                     errorMessage: "",
                 });
             }
@@ -429,14 +415,15 @@ function GlobalStoreContextProvider(props) {
         storeReducer({
             type: GlobalStoreActionType.EDIT_SONG,
             payload: {currentSongIndex: songIndex, currentSong: songToEdit}
-        });        
+        });  
     }
     store.showRemoveSongModal = (songIndex, songToRemove) => {
-        console.log("showRemoveSongModal")
         storeReducer({
             type: GlobalStoreActionType.REMOVE_SONG,
             payload: {currentSongIndex: songIndex, currentSong: songToRemove}
         });        
+        console.log("index: " + songIndex + ", remove: " + songToRemove.title);
+        console.log("Modal: " + store.currentModal);
     }
     store.showLoginErrorModal = (errMsg) => {
         storeReducer({

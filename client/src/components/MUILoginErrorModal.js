@@ -3,6 +3,8 @@ import GlobalStoreContext from '../store';
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
 
 const style = {
     position: 'absolute',
@@ -29,18 +31,18 @@ export default function MUILoginErrorModal() {
             open={store.loginError == true}
         >
             <Box sx={style}>
-                <div className="modal-dialog">
                 <header className="dialog-header">
-                    {store.errorMessage}
+                    <Alert severity="error">{store.errorMessage}</Alert>
                 </header>
                 <div id="confirm-cancel-container">
-                    <button
+                    <Button
+                        variant="outlined"
+                        size="small"
                         id="dialog-no-button"
                         className="modal-button"
                         onClick={handleCloseModal}
-                    >Close</button>
+                    >Close</Button>
                 </div>
-            </div>
             </Box>
         </Modal>
     );

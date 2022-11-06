@@ -345,9 +345,13 @@ input {
 }
 
 #confirm-cancel-container {
+  padding-top: 16px;
   text-align: center;
 }
 
+.dialog-no-button {
+  padding-top: 10px;
+}
 /* ANIMATIONS
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 [data-animation] .modal-dialog {
