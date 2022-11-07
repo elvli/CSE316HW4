@@ -17,8 +17,7 @@ function WorkspaceScreen() {
     store.history = useHistory();
     
     let modalJSX = "";
-    console.log("1. " + store.isEditSongModalOpen());
-    console.log("2. " + store.isEditSongModalOpen());
+    
     if (store.isEditSongModalOpen()) {
         modalJSX = <MUIEditSongModal />;
     }
